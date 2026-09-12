@@ -1,0 +1,21 @@
+id,category,question,answer
+1,Shipping,How long does standard shipping take?,Standard shipping takes 3-5 business days within India. Express shipping takes 1-2 business days for an additional fee of Rs 150.
+2,Shipping,Do you ship internationally?,"Currently we only ship within India. International shipping is not yet available, but we're working on adding it in 2027."
+3,Shipping,How can I track my order?,Once your order ships, you'll receive an email with a tracking link. You can also track it under My Orders on our website or app.
+4,Returns,What is your return policy?,Items can be returned within 15 days of delivery if unused and in original packaging with tags attached. Refunds are processed within 5-7 business days.
+5,Returns,Can I return a sale item?,Sale and clearance items are final sale and cannot be returned unless defective.
+6,Returns,How do I start a return?,Go to My Orders, select the item, and click Request Return. You'll get a prepaid return label via email within 24 hours.
+7,Warranty,What is the warranty period on electronics?,Most electronics carry a 1-year manufacturer warranty covering defects. Accessories like cables and cases carry a 90-day warranty.
+8,Warranty,How do I claim warranty?,"Contact support with your order ID and a description of the issue. We'll arrange a pickup, repair, or replacement depending on the case."
+9,Payment,What payment methods do you accept?,"We accept credit/debit cards, UPI, net banking, and Cash on Delivery (COD) for orders under Rs 10,000."
+10,Payment,Is Cash on Delivery available everywhere?,COD is available in most pin codes except a few remote areas. You'll see COD as an option at checkout only if it's available for your address.
+11,Payment,Why was my payment declined?,Payments can be declined due to insufficient balance, bank server issues, or incorrect card details. Please retry or use a different payment method.
+12,Orders,How do I cancel an order?,"Orders can be cancelled for free within 1 hour of placing them, from My Orders > Cancel Order. After that, cancellation depends on whether the order has shipped."
+13,Orders,Can I change my delivery address after ordering?,"Address changes are possible only before the order ships. Contact support immediately with your order ID to request a change."
+14,Orders,My order shows delivered but I haven't received it,"Please wait a few hours as some couriers mark orders delivered slightly early. If it doesn't arrive within 24 hours, contact support with your order ID and we'll investigate with the courier."
+15,Account,How do I reset my password?,Click Forgot Password on the login page and follow the link sent to your registered email. The link is valid for 30 minutes.
+16,Account,How do I delete my account?,Email privacy@techmart.example with a deletion request. Your account and personal data will be removed within 30 days per our privacy policy.
+17,Product,Do your headphones support Bluetooth 5.0?,Yes, all TechMart wireless headphones in the Pro and Max series support Bluetooth 5.0 or higher for stable, low-latency connections.
+18,Product,What is the battery life of the SmartWatch X2?,The SmartWatch X2 offers up to 7 days of battery life on a single charge with typical use, or 2 days with always-on display enabled.
+19,Support,What are your support hours?,Our support team is available Monday to Friday, 9 AM to 6 PM IST. Messages sent outside these hours are answered the next business day.
+20,Support,Can I talk to a human agent?,"Yes, just type 'talk to agent' or 'human' at any point in the chat, and you'll be connected to our support team."

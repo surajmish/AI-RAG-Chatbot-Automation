@@ -1,0 +1,537 @@
+{
+  "name": "RAG Pipeline & Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1CP3cwqqNXDE3CFgYsQj7GAlAXRM81-pF",
+          "mode": "list",
+          "cachedResultName": "FAQ",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1CP3cwqqNXDE3CFgYsQj7GAlAXRM81-pF"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        -304
+      ],
+      "id": "5be0f6a0-47b4-4a18-9936-7baa5c506d16",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1aeG2m7RzKZEdKyW",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -560,
+        -304
+      ],
+      "id": "7a97f872-4060-46cc-b95e-ed5a1388f02b",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1aeG2m7RzKZEdKyW",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -200,
+        -72
+      ],
+      "id": "a89138bd-371e-4f54-9e69-3c45e5e212c4",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        136
+      ],
+      "id": "2035f5cf-6596-4444-a9c3-813797c8efd6",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "gemini-rag",
+          "mode": "list",
+          "cachedResultName": "gemini-rag"
+        },
+        "options": {
+          "pineconeNamespace": "FAQ"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        -304
+      ],
+      "id": "aa4472b4-0040-46ca-b6ba-1daa95f50015",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "Af5CjKhr56bmqbUk",
+          "name": "Pinecone account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-2"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -328,
+        -72
+      ],
+      "id": "031a9714-61fe-49a7-a647-8ba85630d72c",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4TCPaxceQFraizzi",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        432,
+        -256
+      ],
+      "id": "8843c764-c37f-45e7-9d4e-21679b82cea5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        144,
+        -208
+      ],
+      "id": "f0e4d4e3-b46c-49aa-99f0-08088b3f981c",
+      "name": "When chat message received",
+      "webhookId": "1c8f2054-1328-45cc-bd1c-18bafe36f1d1"
+    },
+    {
+      "parameters": {
+        "model": "google/gemma-4-26b-a4b-it",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -48
+      ],
+      "id": "5ae09b84-c2b7-44b9-87cc-9e9c8ec6abe9",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "RqdYG9uS9ysRsNsv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Call this tool to access the policy and FAQ database",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "gemini-rag",
+          "mode": "list",
+          "cachedResultName": "gemini-rag"
+        },
+        "options": {
+          "pineconeNamespace": "FAQ"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        -64
+      ],
+      "id": "fd4035ea-3549-43b1-b5ab-c23d008c9150",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "Af5CjKhr56bmqbUk",
+          "name": "Pinecone account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-2"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        640,
+        128
+      ],
+      "id": "33fb42c9-f2ef-4bfe-92e0-a4f2bc887069",
+      "name": "Embeddings Google Gemini1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4TCPaxceQFraizzi",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": " Document Ingestion Pipeline ✅\nGoogle Drive Trigger\n       ↓\nDownload File\n       ↓\nPinecone Vector Store\n      ↙                        ↘\n( Data Loader )             ( Gemini Embeddings )\n      ↑\nText Splitter",
+        "height": 272,
+        "width": 368
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -784,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "2a9f585c-b6f9-46ff-9a6a-02302085b8e8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": " RAG Chatbot Pipeline ✅\nWhen chat message received\n          ↓\n       AI Agent\n      ↙       ↘\n(OpenRouter    (Pinecone Vector Store)\nChat Model )       ↓\n              Gemini Embeddings",
+        "height": 224,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "7faa73a1-0608-45f7-90dc-c9b8f483d57a",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {
+    "Download file": [
+      {
+        "json": {
+          "kind": "drive#file",
+          "fileExtension": "md",
+          "copyRequiresWriterPermission": false,
+          "md5Checksum": "ac60b32415155c42e01beb732770687b",
+          "writersCanShare": true,
+          "viewedByMe": true,
+          "mimeType": "text/markdown",
+          "parents": [
+            "1CP3cwqqNXDE3CFgYsQj7GAlAXRM81-pF"
+          ],
+          "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/text/markdown",
+          "shared": false,
+          "lastModifyingUser": {
+            "displayName": "Suraj Mishra",
+            "kind": "drive#user",
+            "me": true,
+            "permissionId": "05280843247348581673",
+            "emailAddress": "sm056654@gmail.com",
+            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocIrtoQUecOsy-PpJGJ3piS1aZR3rOX2e2dMHO3Zu_WdgV3-I1E=s64"
+          },
+          "owners": [
+            {
+              "displayName": "Suraj Mishra",
+              "kind": "drive#user",
+              "me": true,
+              "permissionId": "05280843247348581673",
+              "emailAddress": "sm056654@gmail.com",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocIrtoQUecOsy-PpJGJ3piS1aZR3rOX2e2dMHO3Zu_WdgV3-I1E=s64"
+            }
+          ],
+          "headRevisionId": "0BzzxLrVJhXcLZ0hUTEZnUXlwK3ExSU44ZmNUZnp1VUJHaTlZPQ",
+          "webViewLink": "https://drive.google.com/file/d/148gdMzkOXQ3RXrG7tA2stHHJ4BeAuGBp/view?usp=drivesdk",
+          "webContentLink": "https://drive.google.com/uc?id=148gdMzkOXQ3RXrG7tA2stHHJ4BeAuGBp&export=download",
+          "size": "3760",
+          "viewersCanCopyContent": true,
+          "permissions": [
+            {
+              "id": "05280843247348581673",
+              "displayName": "Suraj Mishra",
+              "type": "user",
+              "kind": "drive#permission",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocIrtoQUecOsy-PpJGJ3piS1aZR3rOX2e2dMHO3Zu_WdgV3-I1E=s64",
+              "emailAddress": "sm056654@gmail.com",
+              "role": "owner",
+              "deleted": false,
+              "pendingOwner": false
+            }
+          ],
+          "hasThumbnail": false,
+          "spaces": [
+            "drive"
+          ],
+          "id": "148gdMzkOXQ3RXrG7tA2stHHJ4BeAuGBp",
+          "name": "Policy_and_FAQ.md",
+          "starred": false,
+          "trashed": false,
+          "explicitlyTrashed": false,
+          "createdTime": "2026-09-11T08:08:38.108Z",
+          "modifiedTime": "2026-09-11T08:07:38.000Z",
+          "modifiedByMeTime": "2026-09-11T08:07:38.000Z",
+          "viewedByMeTime": "2026-09-11T08:08:38.108Z",
+          "quotaBytesUsed": "3760",
+          "version": "2",
+          "originalFilename": "Policy_and_FAQ.md",
+          "ownedByMe": true,
+          "fullFileExtension": "md",
+          "isAppAuthorized": false,
+          "capabilities": {
+            "canChangeViewersCanCopyContent": true,
+            "canEdit": true,
+            "canCopy": true,
+            "canComment": true,
+            "canAddChildren": false,
+            "canDelete": true,
+            "canDownload": true,
+            "canListChildren": false,
+            "canRemoveChildren": false,
+            "canRename": true,
+            "canTrash": true,
+            "canReadRevisions": true,
+            "canChangeCopyRequiresWriterPermission": true,
+            "canMoveItemIntoTeamDrive": true,
+            "canUntrash": true,
+            "canModifyContent": true,
+            "canMoveItemOutOfDrive": true,
+            "canAddMyDriveParent": false,
+            "canRemoveMyDriveParent": true,
+            "canMoveItemWithinDrive": true,
+            "canShare": true,
+            "canMoveChildrenWithinDrive": false,
+            "canModifyContentRestriction": true,
+            "canChangeSecurityUpdateEnabled": false,
+            "canAcceptOwnership": false,
+            "canReadLabels": false,
+            "canModifyLabels": false,
+            "canModifyEditorContentRestriction": true,
+            "canModifyOwnerContentRestriction": true,
+            "canRemoveContentRestriction": false,
+            "canDisableInheritedPermissions": false,
+            "canEnableInheritedPermissions": true,
+            "canChangeItemDownloadRestriction": true,
+            "canStartApproval": false,
+            "canAccessViaGenAi": true
+          },
+          "thumbnailVersion": "0",
+          "modifiedByMe": true,
+          "permissionIds": [
+            "05280843247348581673"
+          ],
+          "linkShareMetadata": {
+            "securityUpdateEligible": false,
+            "securityUpdateEnabled": true
+          },
+          "sha1Checksum": "77861a033956509b3b79f145d0f546648a0b103a",
+          "sha256Checksum": "abf4bccdb116d63330019365973f04146d49f5ff243a36c6b06f584f571f00a4",
+          "inheritedPermissionsDisabled": false,
+          "downloadRestrictions": {
+            "itemDownloadRestriction": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            },
+            "effectiveDownloadRestrictionWithContext": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            }
+          },
+          "clientEncryptionDetails": {
+            "decryptionMetadata": {
+              "wrappedKey": "",
+              "kaclsId": "0",
+              "aes256GcmChunkSize": "unset",
+              "keyFormat": "unsetKeyFormat",
+              "encryptionResourceKeyHash": ""
+            }
+          }
+        },
+        "binary": {
+          "data": {
+            "mimeType": "text/markdown",
+            "fileType": "text",
+            "fileExtension": "md",
+            "data": "filesystem-v2",
+            "fileName": "Policy_and_FAQ.md",
+            "id": "filesystem-v2:workflows/GJ1soNnEy9vmZVz8/executions/2/binary_data/82e7a816-4fdb-4f48-9628-a5f54e5cf492",
+            "fileSize": "3.76 kB",
+            "bytes": 3760
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b51042c7-e000-4ea5-b360-97a9b9fb8372",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1c93da9ce8b54f0b5c3e8b03a92fdf82d85854a74283d3757342aec6ef779071"
+  },
+  "nodeGroups": [],
+  "id": "GJ1soNnEy9vmZVz8",
+  "tags": []
+}

@@ -63,6 +63,20 @@ User Message
 6. Activate the workflows.
 7. Upload a document and test the chatbot.
 
+## Workflow Architecture
+
+### RAG Pipeline & Chatbot
+
+![RAG Pipeline and Chatbot](images/rag-pipeline-chatbot.png)
+
+This workflow handles document ingestion, embedding generation, vector storage, and AI-powered question answering.
+
+### n8n RAG Workflow
+
+![n8n RAG Workflow](images/document-ingestion-workflow.png)
+
+The workflow uses Google Drive, Gemini Embeddings, Pinecone Vector Store, an AI Agent, and an OpenRouter Chat Model.
+
 ## Author
 
 Suraj Mishra

@@ -67,13 +67,13 @@ User Message
 
 ### RAG Pipeline & Chatbot
 
-![RAG Pipeline and Chatbot](image/Screenshot 2026-09-11 154149.png)
+![RAG Pipeline and Chatbot](images/RAG-pipeline & chatbot.png.png)
 
 This workflow handles document ingestion, embedding generation, vector storage, and AI-powered question answering.
 
 ### n8n RAG Workflow
 
-![n8n RAG Workflow](images/document-ingestion-workflow.png)
+![n8n RAG Workflow](images/n8n-rag-workflow.png.png)
 
 The workflow uses Google Drive, Gemini Embeddings, Pinecone Vector Store, an AI Agent, and an OpenRouter Chat Model.
 

@@ -67,7 +67,7 @@ User Message
 
 ### RAG Pipeline & Chatbot
 
-![RAG Pipeline and Chatbot](images/rag-pipeline-chatbot.png)
+![RAG Pipeline and Chatbot](image/Screenshot 2026-09-11 154149.png)
 
 This workflow handles document ingestion, embedding generation, vector storage, and AI-powered question answering.
 
